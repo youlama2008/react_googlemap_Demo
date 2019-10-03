@@ -1,19 +1,24 @@
 const mongoose = require('./../db.js');
+const validator = require('validator');
+
 
 const Schema = mongoose.Schema;
 // create Schema
 const LocationSchema = new Schema({
   name:{
     type: String,
-    required: true
-  },
-  latitude: {
-    type: mongoose.Schema.Types.Decimal128,
     required: true,
+    unique: true,
+    validate: (value) => {
+      return validator.isAlpha(value);
+    }
   },
   longitude: {
-    type: mongoose.Schema.Types.Decimal128,
+    type: String,
     required: true,
+    validate: (value) => {
+      return validator.isLatLong(value);
+    }
   }
 })
 
