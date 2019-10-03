@@ -1,7 +1,7 @@
-var LocationInstance = require("../models/map").model;
+var LocationInstance = require("../models/location").model;
 
 // Task index
-exports.index = (req, res) => res.send("This is task index");
+exports.index = (req, res) => res.send("welcome to location routes");
 
 // List all locations
 exports.fetch_all = (req, res) => {

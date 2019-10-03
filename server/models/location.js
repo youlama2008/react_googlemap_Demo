@@ -19,5 +19,5 @@ const LocationSchema = new Schema({
 
 module.exports = {
   schema: LocationSchema,
-  model: mongoose.model("Map", LocationSchema)
+  model: mongoose.model("Location", LocationSchema)
 };
