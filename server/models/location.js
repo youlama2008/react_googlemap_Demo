@@ -13,7 +13,7 @@ const LocationSchema = new Schema({
       return validator.isAlpha(value);
     }
   },
-  longitude: {
+  geoLocation: {
     type: String,
     required: true,
     validate: (value) => {
