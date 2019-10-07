@@ -10,7 +10,7 @@ exports.fetch_all = (req, res) => {
   }));
 };
 
-// List a location with its name
+// List a location with its id
 exports.fetch_one = (req, res) => {
   LocationInstance.findOne({
     _id: req.params.id
@@ -24,14 +24,14 @@ exports.fetch_one = (req, res) => {
   })
 };
 
-// udpate a location by its name
+// udpate a location by its id
 exports.update = (req, res) => {
   let location = {};
-  if (req.body.name) {
-    location.name = req.body.name;
+  if (req.body.address) {
+    location.address = req.body.address;
   }
-  if (req.body.geoLocation) {
-    location.geoLocation = req.body.geoLocation;
+  if (req.body.geolocation) {
+    location.geolocation = req.body.geolocation;
   }
 
   LocationInstance.findByIdAndUpdate({
@@ -71,14 +71,14 @@ exports.delete = (req, res) => {
 // add one location
 exports.add = (req, res) => {
   let location = {};
-  if (req.body.name) {
-    location.name = req.body.name;
+  if (req.body.address) {
+    location.address = req.body.address;
   }
-  if (req.body.geoLocation) {
-    location.geoLocation = req.body.geoLocation;
+  if (req.body.geolocation) {
+    location.geolocation = req.body.geolocation;
   }
 
-  LocationInstance(location).save().then(user => {
-    res.json(user);
+  LocationInstance(location).save().then(data => {
+    res.json(data);
   });
 };

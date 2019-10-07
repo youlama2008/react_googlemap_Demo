@@ -5,7 +5,7 @@ const validator = require('validator');
 const Schema = mongoose.Schema;
 // create Schema
 const LocationSchema = new Schema({
-  name:{
+  address:{
     type: String,
     required: true,
     unique: true,
@@ -13,7 +13,7 @@ const LocationSchema = new Schema({
       return validator.isAlpha(value);
     }
   },
-  geoLocation: {
+  geolocation: {
     type: String,
     required: true,
     validate: (value) => {
