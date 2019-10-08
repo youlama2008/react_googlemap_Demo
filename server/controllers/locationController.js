@@ -6,23 +6,30 @@ exports.index = (req, res) => res.send("welcome to location routes");
 
 // List all locations
 exports.fetch_all = (req, res) => {
-  LocationInstance.find({}, (err, items) =>
-    res.json({
-      locations: items
-    })
-  );
+  LocationInstance.find({}, (err, items) => {
+    let filteredItems = items.map(item => {
+      return (({ address, geolocation }) => ({ address, geolocation }))(item);
+    });
+    return res.json({
+      locations: filteredItems
+    });
+  });
 };
 
 // List a location with its address
 exports.fetch_one = (req, res) => {
   LocationInstance.findOne({
-      address: req.params.address
-    })
+    address: req.params.address
+  })
     .then(data => {
       if (!data) {
         return res.status(400).json("no data");
       }
-      return res.json(data);
+      let filteredData = (({ address, geolocation }) => ({
+        address,
+        geolocation
+      }))(data);
+      return res.json(filteredData);
     })
     .catch(err => {
       return res.status(404).json(err);
@@ -33,11 +40,14 @@ exports.fetch_one = (req, res) => {
 exports.update = async (req, res) => {
   let location = await getLocation(req);
 
-  LocationInstance.findOneAndUpdate({
+  LocationInstance.findOneAndUpdate(
+    {
       address: req.params.address
-    }, {
+    },
+    {
       $set: location
-    })
+    }
+  )
     .then(data => {
       if (!data) {
         return res.status(400).json("The address does not exsit");
@@ -52,8 +62,8 @@ exports.update = async (req, res) => {
 // delete a location by its address
 exports.delete = (req, res) => {
   LocationInstance.findOneAndDelete({
-      address: req.body.address.toLowerCase()
-    })
+    address: req.body.address.toLowerCase()
+  })
     .then(data => {
       if (!data) {
         return res.status(400).json("The address does not exsit");
@@ -74,8 +84,8 @@ exports.add = async (req, res) => {
 
     if (JSON.stringify(location) !== "{}") {
       LocationInstance.findOne({
-          address: location.address
-        })
+        address: location.address
+      })
         .then(data => {
           if (data) {
             return res.status(409).json("This address already exsits");
