@@ -1,5 +1,5 @@
 var LocationInstance = require("../models/location").model;
-var { getAddress } = require("../utils/getAddress");
+var { getLocation } = require("../utils/utils");
 
 // Task index
 exports.index = (req, res) => res.send("welcome to location routes");
@@ -16,8 +16,8 @@ exports.fetch_all = (req, res) => {
 // List a location with its address
 exports.fetch_one = (req, res) => {
   LocationInstance.findOne({
-    address: req.params.address
-  })
+      address: req.params.address
+    })
     .then(data => {
       if (!data) {
         return res.status(400).json("no data");
@@ -31,24 +31,13 @@ exports.fetch_one = (req, res) => {
 
 // udpate a location by its address
 exports.update = async (req, res) => {
-  let location = {};
-  if (req.body.address) {
-    let locationObjs = await getAddress(req.body.address);
-    let locationObj = locationObjs[0];
-    if (locationObj && JSON.stringify(locationObj) !== "{}") {
-      location.address = locationObj["formatted_address"].split(",")[0].toLowerCase();
-      location.geolocation = `${locationObj.geometry.location.lat}, ${locationObj.geometry.location.lng}`;
-    }
-  }
+  let location = await getLocation(req);
 
-  LocationInstance.findOneAndUpdate(
-    {
+  LocationInstance.findOneAndUpdate({
       address: req.params.address
-    },
-    {
+    }, {
       $set: location
-    }
-  )
+    })
     .then(data => {
       if (!data) {
         return res.status(400).json("The address does not exsit");
@@ -63,8 +52,8 @@ exports.update = async (req, res) => {
 // delete a location by its address
 exports.delete = (req, res) => {
   LocationInstance.findOneAndDelete({
-    address: req.body.address.toLowerCase()
-  })
+      address: req.body.address.toLowerCase()
+    })
     .then(data => {
       if (!data) {
         return res.status(400).json("The address does not exsit");
@@ -80,26 +69,17 @@ exports.delete = (req, res) => {
 
 // add one location
 exports.add = async (req, res) => {
-  let location = {};
   if (req.body.address) {
-    let locationObjs = await getAddress(req.body.address);
-    let locationObj = locationObjs[0];
+    let location = await getLocation(req);
 
-    if (locationObj && JSON.stringify(locationObj) !== "{}") {
-      console.log(locationObj);
-      location.address = locationObj["formatted_address"]
-        .split(",")[0]
-        .toLowerCase();
-
+    if (JSON.stringify(location) !== "{}") {
       LocationInstance.findOne({
-        address: location.address
-      })
+          address: location.address
+        })
         .then(data => {
           if (data) {
             return res.status(409).json("This address already exsits");
           } else {
-            location.geolocation = `${locationObj.geometry.location.lat}, ${locationObj.geometry.location.lng}`;
-
             LocationInstance(location)
               .save()
               .then(data => {
@@ -114,7 +94,7 @@ exports.add = async (req, res) => {
           return res.status(404).json(err);
         });
     } else {
-      return res.status(400).json("It is not a German address");
+      return res.status(400).json("Please enter a valid German address");
     }
   } else {
     return res.status(400).json("Please enter a German address");
