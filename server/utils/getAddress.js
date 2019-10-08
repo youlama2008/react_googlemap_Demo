@@ -1,4 +1,4 @@
-
+const KEY = "API_KEY";
 const COUNTRY = "Germany";
 
 exports.getAddress = address => {

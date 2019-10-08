@@ -1,5 +1,5 @@
 var LocationInstance = require("../models/location").model;
-var { getAddress } = require("../service/getAddress");
+var { getAddress } = require("../utils/getAddress");
 
 // Task index
 exports.index = (req, res) => res.send("welcome to location routes");
@@ -13,10 +13,10 @@ exports.fetch_all = (req, res) => {
   );
 };
 
-// List a location with its id
+// List a location with its address
 exports.fetch_one = (req, res) => {
   LocationInstance.findOne({
-    _id: req.params.id
+    address: req.params.address
   })
     .then(data => {
       if (!data) {
@@ -29,32 +29,29 @@ exports.fetch_one = (req, res) => {
     });
 };
 
-// udpate a location by its id
+// udpate a location by its address
 exports.update = async (req, res) => {
   let location = {};
   if (req.body.address) {
     let locationObjs = await getAddress(req.body.address);
     let locationObj = locationObjs[0];
-    if (JSON.stringify(locationObj) !== "{}") {
-      location.address = locationObj["formatted_address"].split(",")[0];
+    if (locationObj && JSON.stringify(locationObj) !== "{}") {
+      location.address = locationObj["formatted_address"].split(",")[0].toLowerCase();
       location.geolocation = `${locationObj.geometry.location.lat}, ${locationObj.geometry.location.lng}`;
     }
   }
 
-  LocationInstance.findByIdAndUpdate(
+  LocationInstance.findOneAndUpdate(
     {
-      _id: req.params.id
+      address: req.params.address
     },
     {
       $set: location
-    },
-    {
-      new: true
     }
   )
     .then(data => {
       if (!data) {
-        return res.status(400).json("data does not exsit");
+        return res.status(400).json("The address does not exsit");
       }
       res.json(data);
     })
@@ -63,14 +60,14 @@ exports.update = async (req, res) => {
     });
 };
 
-// delete a location by its id
+// delete a location by its address
 exports.delete = (req, res) => {
-  LocationInstance.findByIdAndRemove({
-    _id: req.params.id
+  LocationInstance.findOneAndDelete({
+    address: req.body.address.toLowerCase()
   })
     .then(data => {
       if (!data) {
-        return res.status(400).json("data does not exsit");
+        return res.status(400).json("The address does not exsit");
       }
       data.save().then(data => {
         res.json(data);
@@ -87,18 +84,39 @@ exports.add = async (req, res) => {
   if (req.body.address) {
     let locationObjs = await getAddress(req.body.address);
     let locationObj = locationObjs[0];
-    if (JSON.stringify(locationObj) !== "{}") {
-      location.address = locationObj["formatted_address"].split(",")[0];
-      location.geolocation = `${locationObj.geometry.location.lat}, ${locationObj.geometry.location.lng}`;
-    }
-  }
 
-  LocationInstance(location)
-    .save()
-    .then(data => {
-      res.json(data);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    if (locationObj && JSON.stringify(locationObj) !== "{}") {
+      console.log(locationObj);
+      location.address = locationObj["formatted_address"]
+        .split(",")[0]
+        .toLowerCase();
+
+      LocationInstance.findOne({
+        address: location.address
+      })
+        .then(data => {
+          if (data) {
+            return res.status(409).json("This address already exsits");
+          } else {
+            location.geolocation = `${locationObj.geometry.location.lat}, ${locationObj.geometry.location.lng}`;
+
+            LocationInstance(location)
+              .save()
+              .then(data => {
+                res.json(data);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        })
+        .catch(err => {
+          return res.status(404).json(err);
+        });
+    } else {
+      return res.status(400).json("It is not a German address");
+    }
+  } else {
+    return res.status(400).json("Please enter a German address");
+  }
 };
