@@ -1,4 +1,4 @@
-const KEY = "AIzaSyANnZpeaU56qrJEz0jEp-Em9jVtKu8vZ-Q";
+const KEY = "API_KEY";
 const COUNTRY = "Germany";
 
 exports.getAddress = address => {
@@ -29,9 +29,7 @@ exports.getLocation = async req => {
   let locationObj = locationObjs[0];
 
   if (locationObj && JSON.stringify(locationObj) !== "{}") {
-    location.address = locationObj["formatted_address"]
-      .split(",")[0]
-      .toLowerCase();
+    location.address = req.body.address.toLowerCase();
     location.geolocation = `${locationObj.geometry.location.lat}, ${locationObj.geometry.location.lng}`;
   }
   return location;

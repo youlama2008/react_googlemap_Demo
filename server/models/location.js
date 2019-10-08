@@ -8,10 +8,7 @@ const LocationSchema = new Schema({
   address:{
     type: String,
     required: true,
-    unique: true,
-    validate: (value) => {
-      return validator.isAlpha(value);
-    }
+    unique: true
   },
   geolocation: {
     type: String,
