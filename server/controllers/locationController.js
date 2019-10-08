@@ -23,7 +23,7 @@ exports.fetch_one = (req, res) => {
   })
     .then(data => {
       if (!data) {
-        return res.status(400).json("no data");
+        return res.status(400).json("This address does not exist");
       }
       let filteredData = (({ address, geolocation }) => ({
         address,
@@ -50,7 +50,7 @@ exports.update = async (req, res) => {
   )
     .then(data => {
       if (!data) {
-        return res.status(400).json("The address does not exsit");
+        return res.status(400).json("The address does not exist");
       }
       res.json(data);
     })
@@ -66,7 +66,7 @@ exports.delete = (req, res) => {
   })
     .then(data => {
       if (!data) {
-        return res.status(400).json("The address does not exsit");
+        return res.status(400).json("The address does not exist");
       }
       data.save().then(data => {
         res.json(data);
@@ -88,7 +88,7 @@ exports.add = async (req, res) => {
       })
         .then(data => {
           if (data) {
-            return res.status(409).json("This address already exsits");
+            return res.status(409).json("This address already exists");
           } else {
             LocationInstance(location)
               .save()
