@@ -6,7 +6,7 @@ describe("render <button> properly", () => {
   const wrapper = shallow(
     <CustomButton className="btn-test" disabled={false} text="test button" />
   );
-  
+
   let wrapperProp;
   beforeEach(() => {
     wrapperProp = wrapper.props();
@@ -22,7 +22,7 @@ describe("render <button> properly", () => {
   });
 
   it("should render button with class name ", () => {
-    expect(wrapperProp.className).toEqual("btn-test btn-general");
+    expect(wrapperProp.className).toEqual("btn-general btn-test");
   });
 
   it("should have a <button> without disabled prop", () => {

@@ -1,14 +1,12 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const CustomButton = props => {
-  const {className, disabled, text, handleBtnClick} = props;
+const CustomButton = (props) => {
+  const { className, disabled, text, handleBtnClick } = props;
 
   return (
     <button
-      className={
-        className ? `${className} btn-general` : `btn-general`
-      }
+      className={className ? `btn-general ${className}` : `btn-general`}
       disabled={disabled}
       onClick={handleBtnClick}
     >
