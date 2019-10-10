@@ -2,10 +2,10 @@ import React from "react";
 import CustomInput from "./../CustomInput";
 import { shallow } from "./../../enzyme";
 
-describe("render <Input> properly", () => {
+describe("render CustomInput properly", () => {
   const wrapper = shallow(
     <CustomInput
-      className="input-test"
+      className="test-input"
       disabled={false}
       type="input"
       value="default"
@@ -17,23 +17,23 @@ describe("render <Input> properly", () => {
     wrapperProp = wrapper.props();
   });
 
-  it("should render <input>", () => {
+  it("should render CustomInput", () => {
     expect(wrapper).toHaveLength(1);
   });
 
-  it("should render <input> with default class name", () => {
-    expect(wrapper.find(".input-general")).toBeDefined();
+  it("should render CustomInput with default class name", () => {
+    expect(wrapper.find(".custom-input")).toBeDefined();
   });
 
-  it("should render <input> with added class name ", () => {
-    expect(wrapperProp.className).toEqual("input-general input-test");
+  it("should render CustomInput with added class name ", () => {
+    expect(wrapperProp.className).toEqual("custom-input test-input");
   });
 
-  it("should have a <input> without disabled prop", () => {
+  it("should have a CustomInput without disabled prop", () => {
     expect(wrapperProp.disabled).toEqual(false);
   });
 
-  it("should get value", () => {
+  it("should have a CustomInput with dafault value", () => {
     expect(wrapper.props().value).toEqual("default");
   });
 });

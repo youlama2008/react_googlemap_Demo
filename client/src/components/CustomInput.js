@@ -13,7 +13,7 @@ const CustomInput = (props) => {
 
   return (
     <input
-      className={className ? `input-general ${className}` : `input-general`}
+      className={className ? `custom-input ${className}` : `custom-input`}
       onChange={handleInputChange}
       disabled={disabled}
       type={type}

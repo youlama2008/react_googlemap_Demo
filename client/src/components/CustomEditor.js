@@ -13,7 +13,7 @@ const CustomEditor = () => {
     changeInputValue(event.target.value);
   };
   return (
-    <React.Fragment>
+    <div className="custom-editor">
       <CustomInput
         disabled={isInputDisabled}
         type={Common.textInput.type}
@@ -27,7 +27,7 @@ const CustomEditor = () => {
         text={Common.editBtn.text}
         handleBtnClick={handleBtnClick}
       />
-    </React.Fragment>
+    </div>
   );
 };
 

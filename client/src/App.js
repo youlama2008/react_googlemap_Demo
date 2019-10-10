@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>React Demo: Input, Button & Debounce</p>
+        <p>React Demo: Input, Button</p>
         <CustomEditor />
       </header>
     </div>

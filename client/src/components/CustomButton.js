@@ -6,7 +6,7 @@ const CustomButton = (props) => {
 
   return (
     <button
-      className={className ? `btn-general ${className}` : `btn-general`}
+      className={className ? `custom-btn ${className}` : `custom-btn`}
       disabled={disabled}
       onClick={handleBtnClick}
     >
