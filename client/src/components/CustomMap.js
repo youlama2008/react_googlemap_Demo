@@ -8,7 +8,7 @@ const mapStyles = {
   minHeight: "500px"
 };
 
-const API_KEY = "apikey";
+const API_KEY = "API_KEY";
 
 const CustomMap = (props) => {
   if (!props.loaded) return <div>Loading...</div>;
@@ -21,20 +21,26 @@ const CustomMap = (props) => {
       initialCenter={{ lat: 51.0, lng: 10.0 }}
       zoom={6}
     >
-      <Marker
-        name="Hamburg"
-        position={{ lat: 53.5510846, lng: 9.9936819 }}
-        title="The marker`s title will appear as a tooltip."
-      />
-
-      <Marker name="Berlin" position={{ lat: 52.520006, lng: 13.404954 }} />
+      {props.locations.length >0 && props.locations.map((item) => {
+        let name = item.address;
+        let geoLocation = item.geolocation.split(',');
+        let position = { lat: geoLocation[0], lng: geoLocation[1] };
+        return (
+          <Marker
+            key={name}
+            name={name}
+            position={position}
+          />
+        );
+      })}
     </Map>
   );
 };
 
 CustomMap.propTypes = {
   loaded: PropTypes.bool,
-  google: PropTypes.object
+  google: PropTypes.object,
+  locations: PropTypes.array
 };
 
 export default GoogleApiWrapper({

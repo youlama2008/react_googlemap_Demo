@@ -3,7 +3,7 @@ import EditorContainer from "./EditorContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
 import {
-  getLocationList,
+  getLocationList
   // getOneLocation,
   // addOneLocation,
   // deleteOneLocation,
@@ -18,9 +18,16 @@ const MapLayout = styled.div`
 `;
 
 class MapContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      locations: [],
+    };
+  }
+
   componentDidMount() {
     getLocationList().then((data) => {
-      console.log(data);
+      this.setState({locations: data});
     });
 
     // getOneLocation('berlin').then((data) => {
@@ -42,7 +49,7 @@ class MapContainer extends Component {
   render() {
     return (
       <MapLayout>
-        <CustomMap />
+        <CustomMap locations={this.state.locations}/>
         <EditorContainer />
       </MapLayout>
     );
