@@ -21,18 +21,13 @@ const CustomMap = (props) => {
       initialCenter={{ lat: 51.0, lng: 10.0 }}
       zoom={6}
     >
-      {props.locations.length >0 && props.locations.map((item) => {
-        let name = item.address;
-        let geoLocation = item.geolocation.split(',');
-        let position = { lat: geoLocation[0], lng: geoLocation[1] };
-        return (
-          <Marker
-            key={name}
-            name={name}
-            position={position}
-          />
-        );
-      })}
+      {props.locations.length > 0 &&
+        props.locations.map((item) => {
+          let name = item.address;
+          let geoLocation = item.geolocation.split(",");
+          let position = { lat: geoLocation[0], lng: geoLocation[1] };
+          return <Marker key={name} name={name} position={position} />;
+        })}
     </Map>
   );
 };

@@ -21,13 +21,13 @@ class MapContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locations: [],
+      locations: []
     };
   }
 
   componentDidMount() {
     getLocationList().then((data) => {
-      this.setState({locations: data});
+      this.setState({ locations: data });
     });
 
     // getOneLocation('berlin').then((data) => {
@@ -49,7 +49,7 @@ class MapContainer extends Component {
   render() {
     return (
       <MapLayout>
-        <CustomMap locations={this.state.locations}/>
+        <CustomMap locations={this.state.locations} />
         <EditorContainer />
       </MapLayout>
     );
