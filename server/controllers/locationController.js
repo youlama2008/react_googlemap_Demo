@@ -62,7 +62,7 @@ exports.update = async (req, res) => {
 // delete a location by its address
 exports.delete = (req, res) => {
   LocationInstance.findOneAndDelete({
-    address: req.body.address.toLowerCase()
+    address: req.params.address.toLowerCase()
   })
     .then(data => {
       if (!data) {
@@ -93,7 +93,11 @@ exports.add = async (req, res) => {
             LocationInstance(location)
               .save()
               .then(data => {
-                res.json(data);
+                let filteredData = (({ address, geolocation }) => ({
+                  address,
+                  geolocation
+                }))(data);
+                res.json(filteredData);
               })
               .catch(err => {
                 console.log(err);
