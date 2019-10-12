@@ -18,7 +18,7 @@ const CustomMap = (props) => {
       google={props.google}
       className="custom-map"
       style={mapStyles}
-      initialCenter={{ lat: 51.00, lng: 10.00}}
+      initialCenter={{ lat: 51.0, lng: 10.0 }}
       zoom={6}
     >
       <Marker
@@ -27,10 +27,7 @@ const CustomMap = (props) => {
         title="The marker`s title will appear as a tooltip."
       />
 
-      <Marker
-        name="Berlin"
-        position={{ lat: 52.520006, lng: 13.404954 }}
-      />
+      <Marker name="Berlin" position={{ lat: 52.520006, lng: 13.404954 }} />
     </Map>
   );
 };

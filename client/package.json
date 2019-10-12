@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.6.3",
+    "axios": "^0.19.0",
     "babel-core": "^6.26.3",
     "eslint": "^6.5.1",
     "google-maps-react": "^2.0.2",
@@ -15,7 +16,7 @@
     "styled-components": "^4.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
