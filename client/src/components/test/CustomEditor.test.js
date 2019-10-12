@@ -2,12 +2,11 @@ import React from "react";
 import CustomEditor from "./../CustomEditor";
 import { mount } from "./../../enzyme";
 import CustomButton from "../CustomButton";
-import CustomInput from "../CustomInput";
 
 describe("render CustomEditor properly", () => {
   const customEditor = mount(<CustomEditor />);
   const customBtn = customEditor.find(CustomButton);
-  const customInput = customEditor.find(CustomInput);
+  const customInput = customEditor.find("input");
 
   it("should render CustomEditor", () => {
     expect(customEditor).toHaveLength(1);
@@ -22,12 +21,9 @@ describe("render CustomEditor properly", () => {
     expect(customBtn.props().text).toEqual("Edit");
   });
 
-  it("should render CustomInput with correct props", () => {
-    expect(customInput.props().disabled).toEqual(false);
-    expect(customInput.props().type).toEqual("input");
+  it("should render <input> with correct props", () => {
+    expect(customInput.props().className).toEqual("input-general");
     expect(customInput.props().value).toEqual("");
-    expect(customInput.props().placeholder).toEqual(
-      "Please write your comments"
-    );
+    expect(customInput.props().disabled).toEqual(false);
   });
 });

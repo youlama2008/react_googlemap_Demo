@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
 import Common from "../utils/Common";
 
@@ -14,11 +13,12 @@ const CustomEditor = () => {
   };
   return (
     <div className="custom-editor">
-      <CustomInput
+      <input
+        className="input-general"
+        onChange={handleInputChange}
         disabled={isInputDisabled}
         type={Common.textInput.type}
         placeholder={Common.textInput.placeholder}
-        handleInputChange={handleInputChange}
         value={inputValue}
       />
       <p>{inputValue}</p>
