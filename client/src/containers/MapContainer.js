@@ -3,9 +3,11 @@ import EditorContainer from "./EditorContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
 import {
-  //   getLocationList,
-  //   addOneLocation,
-  deleteOneLocation
+  getLocationList,
+  // getOneLocation,
+  // addOneLocation,
+  // deleteOneLocation,
+  // updateOneLocation
 } from "./../utils/helper";
 
 const MapLayout = styled.div`
@@ -17,17 +19,25 @@ const MapLayout = styled.div`
 
 class MapContainer extends Component {
   componentDidMount() {
-    // getLocationList().then((data) => {
+    getLocationList().then((data) => {
+      console.log(data);
+    });
+
+    // getOneLocation('berlin').then((data) => {
+    //     console.log(data);
+    //   });
+
+    // addOneLocation('berlin').then((data) => {
     //   console.log(data);
     // });
 
-    // addOneLocation('berlin').then((data) => {
-    //   console.log(typeof(data));
+    // updateOneLocation('berlin', "munich").then((data) => {
+    //   console.log(data);
     // });
 
-    deleteOneLocation("berlin").then((data) => {
-      console.log(data);
-    });
+    // deleteOneLocation("munich").then((data) => {
+    //   console.log(data);
+    // });
   }
   render() {
     return (
