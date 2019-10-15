@@ -1,15 +1,23 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import MapContainer from "./containers/MapContainer";
+import { Provider } from "mobx-react";
+import stores from "./stores";
+import styled from "styled-components";
+
+const AppLayout = styled.div`
+  text-align: center;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>React Demo: Google Map</p>
-      <MapContainer />
-    </div>
+    <React.Fragment>
+      <Provider {...stores}>
+        <AppLayout className="App">
+          <p>React Demo: Google Map</p>
+          <MapContainer />
+        </AppLayout>
+      </Provider>
+    </React.Fragment>
   );
 }
 

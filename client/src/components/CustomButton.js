@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CustomButton = (props) => {
+const CustomButton = props => {
   const { className, disabled, text, handleBtnClick } = props;
 
   return (

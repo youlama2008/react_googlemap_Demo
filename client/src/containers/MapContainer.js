@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import EditorContainer from "./EditorContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
 import { inject, observer } from "mobx-react";
-import { getLocationList } from "./../utils/Helper";
 
 const MapLayout = styled.div`
   width: 90%;
@@ -13,46 +13,22 @@ const MapLayout = styled.div`
 `;
 
 const MapContainer = inject("locationStore")(
-  observer(
-    class MapContainer extends Component {
-      constructor(props) {
-        super(props);
-        this.state = {
-          locations: []
-        };
-      }
-
-      componentDidMount() {
-        getLocationList().then((data) => {
-          this.setState({ locations: data });
-        });
-
-        // getOneLocation('berlin').then((data) => {
-        //     console.log(data);
-        //   });
-
-        // addOneLocation('berlin').then((data) => {
-        //   console.log(data);
-        // });
-
-        // updateOneLocation("munich", 'berlin').then((data) => {
-        //   console.log(data);
-        // });
-
-        // deleteOneLocation("munich").then((data) => {
-        //   console.log(data);
-        // });
-      }
-      render() {
-        return (
-          <MapLayout>
-            <CustomMap locations={this.state.locations} />
-            <EditorContainer />
-          </MapLayout>
-        );
-      }
-    }
-  )
+  observer(props => {
+    useEffect(() => {
+      props.locationStore.getAllLocations();
+    }, [props.locationStore, props.locationStore.isLoading]);
+ 
+    return (
+      <MapLayout>
+        <CustomMap />
+        <EditorContainer />
+      </MapLayout>
+    );
+  })
 );
+
+MapContainer.propTypes = {
+  locationStore: PropTypes.object
+};
 
 export default MapContainer;

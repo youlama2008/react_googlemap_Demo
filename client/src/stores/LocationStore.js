@@ -25,42 +25,48 @@ decorate(Location, {
 
 class LocationtStore {
   locationList = [];
+  isLoading = true;
 
   addLocation(address) {
-    addOneLocation(address).then((data) => {
+    addOneLocation(address).then(data => {
       this.locationList.push(data);
+      this.isLoading = false;
     });
   }
 
   deleteLocation(address) {
-    deleteOneLocation(address).then((data) => {
+    deleteOneLocation(address).then(data => {
       console.log(data);
-      let index = this.locationList.findIndex((a) => a.address === address);
+      let index = this.locationList.findIndex(a => a.address === address);
       this.locationList.splice(index, 1);
+      this.isLoading = false;
     });
   }
 
   getAllLocations() {
-    getLocationList().then((data) => {
-      this.locationList = data.map((item) => {
+    getLocationList().then(data => {
+      this.locationList = data.map(item => {
         return new Location(item);
       });
+      this.isLoading = false;
     });
   }
 
   getLocation(address) {
-    getOneLocation(address).then((data) => {
+    getOneLocation(address).then(data => {
       console.log(data);
       this.locatinoInView = new Location(data);
+      this.isLoading = false;
     });
   }
 
   updateLocation(currentAddress, newAddress) {
-    updateOneLocation(currentAddress, newAddress).then((data) => {
+    updateOneLocation(currentAddress, newAddress).then(data => {
       let index = this.locationList.findIndex(
-        (a) => a.address === currentAddress
+        a => a.address === currentAddress
       );
       this.locationList[index] = data;
+      this.isLoading = false;
     });
   }
 }

@@ -28,12 +28,12 @@ export async function addOneLocation(address) {
   };
   let response = await axios
     .post(data_Url, data)
-    .then((response) => {
+    .then(response => {
       if (response.status === 200) {
         return response.data;
       }
     })
-    .catch((error) => {
+    .catch(error => {
       let { status, data } = error.response;
       let errorInfo = { status, data };
       return errorInfo;
@@ -49,12 +49,12 @@ export async function updateOneLocation(oldAddress, newAddress) {
 
   let response = await axios
     .post(data_Url, data)
-    .then((response) => {
+    .then(response => {
       if (response.status === 200) {
         return response.data;
       }
     })
-    .catch((error) => {
+    .catch(error => {
       let { status, data } = error.response;
       let errorInfo = { status, data };
       return errorInfo;
@@ -67,12 +67,12 @@ export async function deleteOneLocation(address) {
 
   let response = await axios
     .delete(data_Url)
-    .then((response) => {
+    .then(response => {
       if (response.status === 200) {
         return response.data;
       }
     })
-    .catch((error) => {
+    .catch(error => {
       let { status, data } = error.response;
       let errorInfo = { status, data };
       return errorInfo;

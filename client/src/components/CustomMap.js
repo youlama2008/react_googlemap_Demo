@@ -2,6 +2,7 @@ import React from "react";
 import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { inject, observer } from "mobx-react";
 
 const mapStyles = {
   position: "relative",
@@ -18,34 +19,40 @@ const MapContainer = styled.div`
 
 const API_KEY = "API_KEY";
 
-const CustomMap = (props) => {
-  if (!props.loaded) return <div>Loading...</div>;
+const CustomMap = inject("locationStore")(
+  observer(props => {
+    if (props.locationStore.isLoading) {
+      return <div>Loading...</div>;
+    }
 
-  return (
-    <MapContainer>
-      <Map
-        google={props.google}
-        className="custom-map"
-        style={mapStyles}
-        initialCenter={{ lat: 51.0, lng: 10.0 }}
-        zoom={6}
-      >
-        {props.locations.length > 0 &&
-          props.locations.map((item) => {
-            let name = item.address;
-            let geoLocation = item.geolocation.split(",");
-            let position = { lat: geoLocation[0], lng: geoLocation[1] };
-            return <Marker key={name} name={name} position={position} />;
-          })}
-      </Map>
-    </MapContainer>
-  );
-};
+    // props.locationStore.getAllLocations();
+
+    return (
+      <MapContainer>
+        <Map
+          google={props.google}
+          className="custom-map"
+          style={mapStyles}
+          initialCenter={{ lat: 51.0, lng: 10.0 }}
+          zoom={6}
+        >
+          {props.locationStore.locationList &&
+            props.locationStore.locationList.map(item => {
+              let name = item.address;
+              let geoLocation = item.geolocation.split(",");
+              let position = { lat: geoLocation[0], lng: geoLocation[1] };
+              return <Marker key={name} name={name} position={position} />;
+            })}
+        </Map>
+      </MapContainer>
+    );
+  })
+);
 
 CustomMap.propTypes = {
-  loaded: PropTypes.bool,
+  isLoading: PropTypes.bool,
   google: PropTypes.object,
-  locations: PropTypes.array
+  locationStore: PropTypes.object
 };
 
 export default GoogleApiWrapper({

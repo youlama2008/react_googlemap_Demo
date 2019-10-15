@@ -8,7 +8,7 @@ const CustomEditor = () => {
   const handleBtnClick = () => {
     enableInput(false);
   };
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     changeInputValue(event.target.value);
   };
   return (
