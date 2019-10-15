@@ -34,3 +34,11 @@ exports.getLocation = async req => {
   }
   return location;
 };
+
+exports.filterData = data => {
+  let { address, geolocation } = data; 
+  return {
+    address,	
+    geolocation	
+  };
+};

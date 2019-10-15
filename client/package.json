@@ -8,6 +8,8 @@
     "babel-core": "^6.26.3",
     "eslint": "^6.5.1",
     "google-maps-react": "^2.0.2",
+    "mobx": "^5.14.0",
+    "mobx-react": "^6.1.4",
     "prettier": "^1.18.2",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",

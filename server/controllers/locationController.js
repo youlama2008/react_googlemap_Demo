@@ -46,12 +46,11 @@ exports.update = async (req, res) => {
         $set: location
       }
     )
-      .then(data => {
+      .then((data) => {
         if (!data) {
           return res.status(404).json("The address does not exist");
         }
-        let msg = `${req.params.address} is now updated to ${req.body.address}`;
-        res.json(msg);
+        res.json(location);
       })
       .catch(err => {
         return res.status(404).json(err);
@@ -94,8 +93,8 @@ exports.add = async (req, res) => {
             LocationInstance(location)
               .save()
               .then(data => {
-                let msg = `${req.body.address} is added successfully`;
-                res.json(msg);
+                let filteredData = filterData(data);
+                return res.json(filteredData);
               })
               .catch(err => {
                 console.log(err);
