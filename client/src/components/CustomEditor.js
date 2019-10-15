@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomButton from "./CustomButton";
-import Common from "../utils/common";
+import Common from "../utils/Common";
 
 const CustomEditor = () => {
   const [isInputDisabled, enableInput] = useState(false);

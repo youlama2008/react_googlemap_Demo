@@ -3,7 +3,7 @@ import EditorContainer from "./EditorContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
 // import { inject, observer } from "mobx-react";
-import { getLocationList } from "./../utils/helper";
+import { getLocationList } from "./../utils/Helper";
 
 const MapLayout = styled.div`
   width: 90%;
