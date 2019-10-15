@@ -1,4 +1,4 @@
-import { observable, action, decorate } from "mobx";
+import { observable, action } from "mobx";
 import {
   getLocationList,
   getOneLocation,
@@ -8,28 +8,26 @@ import {
 } from "./../utils/helper";
 
 class Location {
-  address;
-  geolocation;
+  @observable address;
+  @observable geolocation;
 
   constructor(data) {
     this.address = data.address || "";
     this.geolocation = data.geolocation || [];
   }
 }
-decorate(Timer, {
-  address: observable,
-  geolocation: observable
-});
 
 class LocationtStore {
-  locationList = [];
+  @observable locationList = [];
 
+  @action
   addLocation(address) {
     addOneLocation(address).then((data) => {
       this.locationList.push(data);
     });
   }
 
+  @action
   deleteLocation(address) {
     deleteOneLocation(address).then((data) => {
       console.log(data);
@@ -38,6 +36,7 @@ class LocationtStore {
     });
   }
 
+  @action
   getAllLocations() {
     getLocationList().then((data) => {
       this.locationList = data.map((item) => {
@@ -46,28 +45,23 @@ class LocationtStore {
     });
   }
 
+  @action
   getLocation(address) {
     getOneLocation(address).then((data) => {
       console.log(data);
-      this.locatinoInView = new Product(data);
+      this.locatinoInView = new Location(data);
     });
   }
 
+  @action
   updateLocation(currentAddress, newAddress) {
     updateOneLocation(currentAddress, newAddress).then((data) => {
-      let index = this.locationList.findIndex((a) => a.address === address);
+      let index = this.locationList.findIndex(
+        (a) => a.address === currentAddress
+      );
       this.locationList[index] = data;
     });
   }
 }
-
-decorate(LocationtStore, {
-  locationList: observable,
-  getAllLocations: action,
-  getLocation: action,
-  addLocation: action,
-  deleteLocation: action,
-  updateLocation: action,
-});
 
 export default new LocationtStore();

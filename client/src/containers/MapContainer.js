@@ -2,14 +2,8 @@ import React, { Component } from "react";
 import EditorContainer from "./EditorContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
-import { inject, observer } from 'mobx-react';
-import {
-  getLocationList,
-  getOneLocation,
-  addOneLocation,
-  deleteOneLocation,
-  updateOneLocation
-} from "./../utils/helper";
+// import { inject, observer } from "mobx-react";
+import { getLocationList } from "./../utils/helper";
 
 const MapLayout = styled.div`
   width: 90%;
@@ -18,9 +12,8 @@ const MapLayout = styled.div`
   justify-content: space-between;
 `;
 
-
-@inject('locationStore')
-@observer
+// @inject("locationStore")
+// @observer
 class MapContainer extends Component {
   constructor(props) {
     super(props);
