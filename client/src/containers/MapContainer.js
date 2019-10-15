@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import EditorContainer from "./EditorContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
-// import { inject, observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import { getLocationList } from "./../utils/Helper";
 
 const MapLayout = styled.div`
@@ -12,45 +12,47 @@ const MapLayout = styled.div`
   justify-content: space-between;
 `;
 
-// @inject("locationStore")
-// @observer
-class MapContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      locations: []
-    };
-  }
+const MapContainer = inject("locationStore")(
+  observer(
+    class MapContainer extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          locations: []
+        };
+      }
 
-  componentDidMount() {
-    getLocationList().then((data) => {
-      this.setState({ locations: data });
-    });
+      componentDidMount() {
+        getLocationList().then((data) => {
+          this.setState({ locations: data });
+        });
 
-    // getOneLocation('berlin').then((data) => {
-    //     console.log(data);
-    //   });
+        // getOneLocation('berlin').then((data) => {
+        //     console.log(data);
+        //   });
 
-    // addOneLocation('berlin').then((data) => {
-    //   console.log(data);
-    // });
+        // addOneLocation('berlin').then((data) => {
+        //   console.log(data);
+        // });
 
-    // updateOneLocation("munich", 'berlin').then((data) => {
-    //   console.log(data);
-    // });
+        // updateOneLocation("munich", 'berlin').then((data) => {
+        //   console.log(data);
+        // });
 
-    // deleteOneLocation("munich").then((data) => {
-    //   console.log(data);
-    // });
-  }
-  render() {
-    return (
-      <MapLayout>
-        <CustomMap locations={this.state.locations} />
-        <EditorContainer />
-      </MapLayout>
-    );
-  }
-}
+        // deleteOneLocation("munich").then((data) => {
+        //   console.log(data);
+        // });
+      }
+      render() {
+        return (
+          <MapLayout>
+            <CustomMap locations={this.state.locations} />
+            <EditorContainer />
+          </MapLayout>
+        );
+      }
+    }
+  )
+);
 
 export default MapContainer;

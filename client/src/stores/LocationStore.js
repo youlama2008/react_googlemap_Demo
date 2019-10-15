@@ -1,15 +1,16 @@
-import { observable, action } from "mobx";
+import { observable, action, decorate } from "mobx";
+
 import {
   getLocationList,
   getOneLocation,
   addOneLocation,
   deleteOneLocation,
   updateOneLocation
-} from "./../utils/helper";
+} from "./../utils/Helper";
 
 class Location {
-  @observable address;
-  @observable geolocation;
+  address;
+  geolocation;
 
   constructor(data) {
     this.address = data.address || "";
@@ -17,17 +18,20 @@ class Location {
   }
 }
 
-class LocationtStore {
-  @observable locationList = [];
+decorate(Location, {
+  address: observable,
+  geolocation: observable
+});
 
-  @action
+class LocationtStore {
+  locationList = [];
+
   addLocation(address) {
     addOneLocation(address).then((data) => {
       this.locationList.push(data);
     });
   }
 
-  @action
   deleteLocation(address) {
     deleteOneLocation(address).then((data) => {
       console.log(data);
@@ -36,7 +40,6 @@ class LocationtStore {
     });
   }
 
-  @action
   getAllLocations() {
     getLocationList().then((data) => {
       this.locationList = data.map((item) => {
@@ -45,7 +48,6 @@ class LocationtStore {
     });
   }
 
-  @action
   getLocation(address) {
     getOneLocation(address).then((data) => {
       console.log(data);
@@ -53,7 +55,6 @@ class LocationtStore {
     });
   }
 
-  @action
   updateLocation(currentAddress, newAddress) {
     updateOneLocation(currentAddress, newAddress).then((data) => {
       let index = this.locationList.findIndex(
@@ -63,5 +64,14 @@ class LocationtStore {
     });
   }
 }
+
+decorate(LocationtStore, {
+  locationList: observable,
+  addLocation: action,
+  deleteLocation: action,
+  getAllLocations: action,
+  getLocation: action,
+  updateLocation: action
+});
 
 export default new LocationtStore();
