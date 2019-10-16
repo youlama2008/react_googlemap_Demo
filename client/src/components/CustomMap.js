@@ -39,8 +39,7 @@ const CustomMap = inject("locationStore")(
           {props.locationStore.locationList &&
             props.locationStore.locationList.map(item => {
               let name = item.address;
-              let geoLocation = item.geolocation.split(",");
-              let position = { lat: geoLocation[0], lng: geoLocation[1] };
+              let position = { lat: item["latitude"], lng: item["langtitude"] };
               return <Marker key={name} name={name} position={position} />;
             })}
         </Map>

@@ -5,22 +5,26 @@ import {
   getOneLocation,
   addOneLocation,
   deleteOneLocation,
-  updateOneLocation
+  updateOneLocation,
+  formatData
 } from "./../utils/Helper";
 
 class Location {
   address;
-  geolocation;
+  latitude;
+  langtitude;
 
   constructor(data) {
     this.address = data.address || "";
-    this.geolocation = data.geolocation || [];
+    this.latitude = data.latitude || "";
+    this.langtitude = data.langtitude || "";
   }
 }
 
 decorate(Location, {
   address: observable,
-  geolocation: observable
+  latitude: observable,
+  langtitude: observable
 });
 
 class LocationtStore {
@@ -46,7 +50,7 @@ class LocationtStore {
   getAllLocations() {
     getLocationList().then(data => {
       this.locationList = data.map(item => {
-        return new Location(item);
+        return new Location(formatData(item));
       });
       this.isLoading = false;
     });
@@ -54,9 +58,7 @@ class LocationtStore {
 
   getLocation(address) {
     getOneLocation(address).then(data => {
-      console.log(data);
-      this.locatinoInView = new Location(data);
-      this.isLoading = false;
+      return new Location(formatData(data));
     });
   }
 
@@ -65,7 +67,7 @@ class LocationtStore {
       let index = this.locationList.findIndex(
         a => a.address === currentAddress
       );
-      this.locationList[index] = data;
+      this.locationList[index] = formatData(data);
       this.isLoading = false;
     });
   }

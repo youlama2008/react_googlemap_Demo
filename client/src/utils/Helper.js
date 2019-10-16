@@ -4,6 +4,15 @@ const LOCATION_ADD = "http://localhost:3000/location/add";
 const LOCATION_UPDATE = "http://localhost:3000/location/update/";
 const LOCATION_DELETE = "http://localhost:3000/location/delete/";
 
+export function formatData(data) {
+  let formatedData = {};
+  formatedData.address = data.address;
+  formatedData.latitude = data.geolocation.split(",")[0].trim();
+  formatedData.langtitude = data.geolocation.split(",")[1].trim();
+
+  return formatedData;
+}
+
 export async function getLocationList() {
   const ALL_URL = "all";
   let data_Url = LOCATION_GET + ALL_URL;

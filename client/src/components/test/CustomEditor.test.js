@@ -2,9 +2,20 @@ import React from "react";
 import CustomEditor from "./../CustomEditor";
 import { mount } from "./../../enzyme";
 import CustomButton from "../CustomButton";
+import { Provider } from "mobx-react";
+import stores from "./../../stores";
 
 describe("render CustomEditor properly", () => {
-  const customEditor = mount(<CustomEditor />);
+  const location = {
+    address: "hamburg",
+    latitude: "53.5510846",
+    longtitude: "9.9936819"
+  };
+  const customEditor = mount(
+    <Provider {...stores}>
+      <CustomEditor locationStore={stores} location={location} />
+    </Provider>
+  );
   const customBtns = customEditor.find(CustomButton);
   const customInput = customEditor.find("input");
 
@@ -31,8 +42,7 @@ describe("render CustomEditor properly", () => {
   });
 
   it("should render <input> with correct props", () => {
-    expect(customInput.props().className).toEqual("input-general");
-    expect(customInput.props().value).toEqual("");
+    expect(customInput.props().value).toEqual("hamburg");
     expect(customInput.props().disabled).toEqual(true);
   });
 });
