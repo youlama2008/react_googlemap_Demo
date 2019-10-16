@@ -17,7 +17,7 @@ const MapContainer = inject("locationStore")(
     useEffect(() => {
       props.locationStore.getAllLocations();
     }, [props.locationStore, props.locationStore.isLoading]);
- 
+
     return (
       <MapLayout>
         <CustomMap />

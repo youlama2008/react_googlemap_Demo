@@ -1,12 +1,31 @@
 import React, { useState } from "react";
 import CustomButton from "./CustomButton";
 import Common from "../utils/Common";
+import styled from "styled-components";
+
+const ButtonLayout = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const CustomEditor = () => {
-  const [isInputDisabled, enableInput] = useState(false);
+  const [isInputDisabled, disableInput] = useState(true);
+  const [isEditMode, enableEditMode] = useState(false);
   const [inputValue, changeInputValue] = useState("");
-  const handleBtnClick = () => {
-    enableInput(false);
+  const editBtnClick = () => {
+    disableInput(false);
+    enableEditMode(true);
+  };
+  const deleteBtnClick = () => {
+    disableInput(true);
+  };
+  const saveBtnClick = () => {
+    disableInput(true);
+    enableEditMode(false);
+  };
+  const cancelBtnClick = () => {
+    enableEditMode(false);
+    disableInput(true);
   };
   const handleInputChange = event => {
     changeInputValue(event.target.value);
@@ -22,11 +41,34 @@ const CustomEditor = () => {
         value={inputValue}
       />
       <p>{inputValue}</p>
-      <CustomButton
-        disabled={!inputValue}
-        text={Common.editBtn.text}
-        handleBtnClick={handleBtnClick}
-      />
+      <ButtonLayout>
+        {!isEditMode ? (
+          <CustomButton
+            disabled={false}
+            text="Edit"
+            handleBtnClick={editBtnClick}
+          />
+        ) : (
+          <CustomButton
+            disabled={false}
+            text="Save"
+            handleBtnClick={saveBtnClick}
+          />
+        )}
+        <p>or</p>
+        {!isEditMode ? (
+        <CustomButton
+          disabled={false}
+          text="Delete"
+          handleBtnClick={deleteBtnClick}
+        /> ) : (
+          <CustomButton
+          disabled={false}
+          text="Cancel"
+          handleBtnClick={cancelBtnClick}
+        />
+        )}
+      </ButtonLayout>
     </div>
   );
 };

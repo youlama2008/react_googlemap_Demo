@@ -1,17 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const Button = styled.button`
+  height: 32px;
+  background-color: #ffffff;
+  border: 1px solid #b2b2b2;
+  border-radius: 4px;
+  padding: 2px 8px;
+`;
 
 const CustomButton = props => {
   const { className, disabled, text, handleBtnClick } = props;
 
   return (
-    <button
-      className={className ? `custom-btn ${className}` : `custom-btn`}
+    <Button
+      className={className ? className : ``}
       disabled={disabled}
       onClick={handleBtnClick}
     >
       {text}
-    </button>
+    </Button>
   );
 };
 
