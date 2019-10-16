@@ -24,7 +24,7 @@ describe("render CustomEditor properly", () => {
     expect(customBtns.first().props().text).toEqual("Edit");
     expect(customBtns.first().props().disabled).toEqual(false);
   });
-  
+
   it("should render Delete button with correct props", () => {
     expect(customBtns.at(1).props().text).toEqual("Delete");
     expect(customBtns.at(1).props().disabled).toEqual(false);

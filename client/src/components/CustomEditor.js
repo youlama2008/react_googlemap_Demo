@@ -57,16 +57,17 @@ const CustomEditor = () => {
         )}
         <p>or</p>
         {!isEditMode ? (
-        <CustomButton
-          disabled={false}
-          text="Delete"
-          handleBtnClick={deleteBtnClick}
-        /> ) : (
           <CustomButton
-          disabled={false}
-          text="Cancel"
-          handleBtnClick={cancelBtnClick}
-        />
+            disabled={false}
+            text="Delete"
+            handleBtnClick={deleteBtnClick}
+          />
+        ) : (
+          <CustomButton
+            disabled={false}
+            text="Cancel"
+            handleBtnClick={cancelBtnClick}
+          />
         )}
       </ButtonLayout>
     </div>
