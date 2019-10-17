@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import CustomButton from "./CustomButton";
-import Common from "../utils/Common";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 
 const CustomEditorContainer = styled.div`
   display: inline-block;
-  flex-direction: column;
-  max-width: 150px;
-  margin: 5px;
+  text-align: left;
+  margin: 5px 20px;
 `;
 
 const ButtonLayout = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;
 
@@ -25,12 +22,16 @@ const CustomText = styled.p`
 `;
 
 const CustomInput = styled.input`
-  font-size: 14px;
-  font-size: 24px;
-  border: 1px solid #fff;
+  font-size: 20px;
+  border: 1px solid #198bbb;
   color: #198bbb;
   padding: 0;
   font-weight: 600;
+  width: 90%;
+
+  &:disabled {
+    border: none;
+  }
 `;
 
 const CustomEditor = inject("locationStore")(
@@ -44,17 +45,29 @@ const CustomEditor = inject("locationStore")(
       disableInput(false);
       enableEditMode(true);
     };
-    const deleteBtnClick = event => {
-      console.log(inputValue);
+    const deleteBtnClick = () => {
+      props.locationStore.isLoading = true;
       disableInput(true);
+      props.locationStore.deleteLocation(inputValue);
     };
-    const saveBtnClick = event => {
-      disableInput(true);
-      enableEditMode(false);
+    const saveBtnClick = () => {
+      props.locationStore.isLoading = true;
+      if (props.location.address) {
+        props.locationStore.updateLocation(props.location.address, inputValue);
+      } else {
+        props.locationStore.addLocation(inputValue);
+      }
+        disableInput(true);
+        enableEditMode(false);
     };
-    const cancelBtnClick = event => {
+    const cancelBtnClick = () => {
       enableEditMode(false);
-      disableInput(true);
+      if (props.location.address) {
+        changeInputValue(props.location.address);
+        disableInput(true);
+      } else {
+        props.locationStore.locationList.pop();
+      }
     };
     const handleInputChange = event => {
       changeInputValue(event.target.value);
@@ -63,16 +76,19 @@ const CustomEditor = inject("locationStore")(
       <CustomEditorContainer>
         <CustomInput
           onChange={handleInputChange}
-          disabled={isInputDisabled}
-          type={Common.textInput.type}
-          placeholder={Common.textInput.placeholder}
+          disabled={isInputDisabled && !props.locationStore.errorMsg}
+          type="text"
+          // placeholder="address is: ..."
           value={inputValue}
         />
+        {props.locationStore.errorMsg && (
+          <CustomText>error: {props.locationStore.errorMsg}</CustomText>
+        )}
         <CustomText>{props.location.address}</CustomText>
         <CustomText>latitude: {props.location.latitude}</CustomText>
         <CustomText>langtitude: {props.location.langtitude}</CustomText>
         <ButtonLayout>
-          {!isEditMode ? (
+          {!(isEditMode || props.locationStore.errorMsg) ? (
             <CustomButton
               disabled={false}
               text="Edit"
@@ -80,7 +96,9 @@ const CustomEditor = inject("locationStore")(
             />
           ) : (
             <CustomButton
-              disabled={false}
+              disabled={
+                inputValue === "" || inputValue === props.location.address
+              }
               text="Save"
               handleBtnClick={saveBtnClick}
             />

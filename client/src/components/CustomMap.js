@@ -10,6 +10,8 @@ const mapStyles = {
 };
 
 const MapContainer = styled.div`
+  width: 530px;
+
   .custom-map {
     position: static !important;
     min-width: 500px;

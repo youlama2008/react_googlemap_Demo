@@ -9,6 +9,7 @@ const Button = styled.button`
   border-radius: 4px;
   padding: 2px 8px;
   font-size: 14px;
+  margin: 5px;
 `;
 
 const CustomButton = props => {

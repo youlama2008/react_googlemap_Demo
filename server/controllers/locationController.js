@@ -97,7 +97,7 @@ exports.add = async (req, res) => {
                 return res.json(filteredData);
               })
               .catch(err => {
-                console.log(err);
+                return res.status(404).json(err);
               });
           }
         })

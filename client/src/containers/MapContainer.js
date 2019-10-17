@@ -4,12 +4,13 @@ import EditorContainer from "./EditorContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
 import { inject, observer } from "mobx-react";
+import CustomButton from "./../components/CustomButton";
 
 const MapLayout = styled.div`
   width: 90%;
   margin: 20px auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const MapContainer = inject("locationStore")(
@@ -18,9 +19,18 @@ const MapContainer = inject("locationStore")(
       props.locationStore.getAllLocations();
     }, [props.locationStore, props.locationStore.isLoading]);
 
+    const addMapBtnClick = () => {
+      props.locationStore.initLocation();
+    };
+
     return (
       <MapLayout>
         <CustomMap />
+        <CustomButton
+          disabled={false}
+          text="Add Map"
+          handleBtnClick={addMapBtnClick}
+        />
         <EditorContainer />
       </MapLayout>
     );
