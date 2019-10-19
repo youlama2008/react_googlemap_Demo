@@ -2,7 +2,7 @@
 
 ### This is a demo project built by node(expres), react, mobx + google map API + styled component.
 
-Frontend and Backend are decoupled. Please install dependencies by running in both folder 'server and client‘
+Frontend and Backend are decoupled. Please go to folder 'server and client‘ and install dependencies by running
 ```
 yarn
 ```
