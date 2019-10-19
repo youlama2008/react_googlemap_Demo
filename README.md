@@ -1,6 +1,6 @@
 # react_googlemap_Demo
 
-### This is a demo project built by node(expres), react, mobx + google map API + styled component.
+### This is a demo project built by node(expres), react, mobx + google map API and styled component
 
 Frontend and Backend are decoupled. Please go to folder 'server and client‘ and install dependencies by running
 ```
@@ -23,3 +23,6 @@ yarn test
 ```
 
 pre-commit and pre-push hook are added, with there is code change, prettier, eslint and unit test will run per configuration
+
+
+NOTE: Please replace KEY/API_KEY by google map API keys in file 'server/utils/utils.js' and 'client/src/components/CustomMap.js' to see the results
