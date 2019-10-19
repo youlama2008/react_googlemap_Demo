@@ -9,6 +9,7 @@ export function formatData(data) {
   formatedData.address = data.address;
   formatedData.latitude = data.geolocation.split(",")[0].trim();
   formatedData.langtitude = data.geolocation.split(",")[1].trim();
+  formatedData.valid = data.valid;
 
   return formatedData;
 }

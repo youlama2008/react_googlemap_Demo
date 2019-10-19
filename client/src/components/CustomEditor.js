@@ -21,12 +21,17 @@ const CustomText = styled.p`
   font-size: 14px;
 `;
 
+const ErrorMsg = styled(CustomText)`
+  color: red;
+  font-size: 14px;
+`;
+
 const CustomInput = styled.input`
   font-size: 20px;
   border: 1px solid #198bbb;
   color: #198bbb;
   padding: 0;
-  font-weight: 600;
+  font-weight: bold;
   width: 90%;
 
   &:disabled {
@@ -46,19 +51,17 @@ const CustomEditor = inject("locationStore")(
       enableEditMode(true);
     };
     const deleteBtnClick = () => {
-      props.locationStore.isLoading = true;
       disableInput(true);
-      props.locationStore.deleteLocation(inputValue);
+      props.locationStore.deleteLocation(props.location.address);
     };
     const saveBtnClick = () => {
-      props.locationStore.isLoading = true;
       if (props.location.address) {
         props.locationStore.updateLocation(props.location.address, inputValue);
       } else {
         props.locationStore.addLocation(inputValue);
       }
-        disableInput(true);
-        enableEditMode(false);
+      disableInput(true);
+      enableEditMode(false);
     };
     const cancelBtnClick = () => {
       enableEditMode(false);
@@ -66,29 +69,30 @@ const CustomEditor = inject("locationStore")(
         changeInputValue(props.location.address);
         disableInput(true);
       } else {
-        props.locationStore.locationList.pop();
+        props.locationStore.locationList.shift();
       }
+      props.location.valid= true;
     };
     const handleInputChange = event => {
       changeInputValue(event.target.value);
     };
     return (
       <CustomEditorContainer>
+        {!props.location.valid && props.locationStore.errorMsg && (
+          <ErrorMsg>{props.locationStore.errorMsg}</ErrorMsg>
+        )}
         <CustomInput
           onChange={handleInputChange}
-          disabled={isInputDisabled && !props.locationStore.errorMsg}
+          disabled={isInputDisabled}
           type="text"
-          // placeholder="address is: ..."
+          placeholder="Please enter address"
           value={inputValue}
         />
-        {props.locationStore.errorMsg && (
-          <CustomText>error: {props.locationStore.errorMsg}</CustomText>
-        )}
         <CustomText>{props.location.address}</CustomText>
         <CustomText>latitude: {props.location.latitude}</CustomText>
         <CustomText>langtitude: {props.location.langtitude}</CustomText>
         <ButtonLayout>
-          {!(isEditMode || props.locationStore.errorMsg) ? (
+          {!isEditMode ? (
             <CustomButton
               disabled={false}
               text="Edit"
@@ -104,7 +108,7 @@ const CustomEditor = inject("locationStore")(
             />
           )}
           <CustomText>or</CustomText>
-          {!isEditMode ? (
+          {!isEditMode? (
             <CustomButton
               disabled={false}
               text="Delete"

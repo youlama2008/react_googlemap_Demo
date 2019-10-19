@@ -61,7 +61,7 @@ exports.update = async (req, res) => {
 // delete a location by its address
 exports.delete = (req, res) => {
   LocationInstance.findOneAndDelete({
-    address: req.params.address.toLowerCase()
+    address: req.params.address.replace(/^\S/, s => s.toUpperCase())
   })
     .then(data => {
       if (!data) {

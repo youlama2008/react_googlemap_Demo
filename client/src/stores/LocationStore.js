@@ -1,4 +1,4 @@
-import { observable, action, decorate } from "mobx";
+import { observable, action, decorate, computed } from "mobx";
 
 import {
   getLocationList,
@@ -13,34 +13,43 @@ class Location {
   address;
   latitude;
   langtitude;
+  valid;
 
   constructor(data) {
     this.address = data.address || "";
     this.latitude = data.latitude || "";
     this.langtitude = data.langtitude || "";
+    this.valid = data.valid || false;
   }
 }
 
 decorate(Location, {
   address: observable,
   latitude: observable,
-  langtitude: observable
+  langtitude: observable,
+  valid: observable
 });
 
 class LocationtStore {
   locationList = [];
-  isLoading = true;
-  initLocationCount = 0;
+  isLoading = false;
   errorMsg = "";
+
+  get hasInitLocation() {
+    let index = this.locationList
+      ? this.locationList.findIndex(location => location.address === "")
+      : -1;
+    return index > -1;
+  }
 
   initLocation() {
     let location = new Location({});
     if (this.locationList) {
       this.locationList.unshift(location);
     } else {
-      this.locationList=[location];
+      this.locationList = [location];
     }
-    this.initLocationCount++;
+    this.errorMsg = "";
   }
 
   addLocation(address) {
@@ -48,49 +57,54 @@ class LocationtStore {
       addOneLocation(address)
         .then(data => {
           if (!data.status) {
-            this.locationList.push(formatData(data));
-            this.isLoading = false;
-            this.errorMsg = "";
+            let locationData = Object.assign(data, { valid: true });
+            this.locationList[0] = formatData(locationData);
           } else {
+            this.locationList[0].valid = false;
             this.errorMsg = data.data;
-            this.isLoading = false;
           }
         })
         .catch(error => {
           this.errorMsg = error;
-          this.isLoading = false;
         });
     } else {
       this.errorMsg = "Please enter your address";
-      this.isLoading = false;
     }
   }
 
   deleteLocation(address) {
-    let index = this.locationList.findIndex(a => a.address === address);
-    if (index > -1) {
-      deleteOneLocation(address)
-        .then(data => {
-          this.errorMsg = "";
-          console.log(data);
-          this.locationList.splice(index, 1);
-          this.isLoading = false;
-        })
-        .catch(error => {
-          this.errorMsg = error;
-          this.isLoading = false;
-        });
+    if (address) {
+      let index = this.locationList.findIndex(
+        location => location.address === address
+      );
+      if (index > -1) {
+        deleteOneLocation(address)
+          .then(data => {
+            if (!data.status) {
+              this.errorMsg = "";
+              this.locationList.splice(index, 1);
+            } else {
+              this.locationList[index].valid = false;
+              this.errorMsg = data.data;
+            }
+          })
+          .catch(error => {
+            this.errorMsg = error;
+          });
+      }
+    } else {
+      this.locationList.shift();
     }
   }
 
   getAllLocations() {
     getLocationList().then(data => {
-      this.isLoading = false;
       this.errorMsg = "";
       this.locationList =
         data.length > 0 &&
         data.map(item => {
-          return new Location(formatData(item));
+          let locationData = Object.assign(item, { valid: true });
+          return new Location(formatData(locationData));
         });
     });
   }
@@ -102,12 +116,13 @@ class LocationtStore {
         .then(data => {
           this.errorMsg = "";
           console.log(data);
-          this.isLoading = false;
-          return new Location(formatData(data));
+          // this.isLoading = false;
+          let locationData = Object.assign(data, { valid: true });
+          return new Location(formatData(locationData));
         })
         .catch(error => {
           this.errorMsg = error;
-          this.isLoading = false;
+          // this.isLoading = false;
         });
     }
   }
@@ -116,21 +131,22 @@ class LocationtStore {
     updateOneLocation(currentAddress, newAddress)
       .then(data => {
         console.log(data);
+        let index = this.locationList.findIndex(
+          a => a.address === currentAddress
+        );
         if (!data.status) {
           this.errorMsg = "";
-          let index = this.locationList.findIndex(
-            a => a.address === currentAddress
-          );
           this.locationList[index] = new Location(formatData(data));
-          this.isLoading = false;
+          // this.isLoading = false;
         } else {
+          this.locationList[index].valid = false;
           this.errorMsg = data.data;
-          this.isLoading = false;
+          // this.isLoading = false;
         }
       })
       .catch(error => {
         this.errorMsg = error;
-        this.isLoading = false;
+        // this.isLoading = false;
       });
   }
 }
@@ -138,8 +154,8 @@ class LocationtStore {
 decorate(LocationtStore, {
   locationList: observable,
   isLoading: observable,
-  initLocationCount: observable,
   errorMsg: observable,
+  hasInitLocation: computed,
   addLocation: action,
   deleteLocation: action,
   getAllLocations: action,

@@ -1,24 +1,28 @@
 import React from "react";
-import CustomEditor from "./../components/CustomEditor";
+import CustomEditor from "../components/CustomEditor";
 import styled from "styled-components";
 import { inject, observer } from "mobx-react";
 
-const EditorLayout = styled.div`
+const LocationsLayout = styled.div`
   display: inline-block;
+  border-top: 1px solid #cecece;
+  margin-top: 10px;
+  padding-top: 20px;
+  min-width: 200px;
+  text-align: left;
 `;
 
-const EditorContainer = inject("locationStore")(
+const LocationContainer = inject("locationStore")(
   observer(props => {
-
     return (
-      <EditorLayout>
+      <LocationsLayout>
         {props.locationStore.locationList &&
           props.locationStore.locationList.map(location => {
             return <CustomEditor key={location.address} location={location} />;
           })}
-      </EditorLayout>
+      </LocationsLayout>
     );
   })
 );
 
-export default EditorContainer;
+export default LocationContainer;

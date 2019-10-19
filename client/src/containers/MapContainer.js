@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import EditorContainer from "./EditorContainer";
+import LocationContainer from "./LocationContainer";
 import CustomMap from "./../components/CustomMap";
 import styled from "styled-components";
 import { inject, observer } from "mobx-react";
@@ -11,6 +11,21 @@ const MapLayout = styled.div`
   margin: 20px auto;
   display: flex;
   justify-content: flex-start;
+`;
+const InputLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+`;
+
+const AddLocationButton = styled(CustomButton)`
+  background-color: #198bbb;
+  color: #fff;
+  width: 80px;
+  font-weight: bold;
+  :disabled {
+    background-color: #ccc;
+  }
 `;
 
 const MapContainer = inject("locationStore")(
@@ -26,12 +41,14 @@ const MapContainer = inject("locationStore")(
     return (
       <MapLayout>
         <CustomMap />
-        <CustomButton
-          disabled={false}
-          text="Add Map"
-          handleBtnClick={addMapBtnClick}
-        />
-        <EditorContainer />
+        <InputLayout>
+          <AddLocationButton
+            disabled={props.locationStore.hasInitLocation}
+            text="Add Map"
+            handleBtnClick={addMapBtnClick}
+          />
+          <LocationContainer />
+        </InputLayout>
       </MapLayout>
     );
   })

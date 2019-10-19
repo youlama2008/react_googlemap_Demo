@@ -29,7 +29,7 @@ exports.getLocation = async req => {
   let locationObj = locationObjs[0];
 
   if (locationObj && JSON.stringify(locationObj) !== "{}") {
-    location.address = req.body.address.toLowerCase();
+    location.address = req.body.address.replace(/^\S/, s => s.toUpperCase());
     location.geolocation = `${locationObj.geometry.location.lat}, ${locationObj.geometry.location.lng}`;
   }
   return location;
