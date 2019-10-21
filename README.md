@@ -26,3 +26,7 @@ pre-commit and pre-push hook are added, with there is code change, prettier, esl
 
 
 NOTE: Please replace KEY/API_KEY by google map API keys in file 'server/utils/utils.js' and 'client/src/components/CustomMap.js' to see the results
+
+
+Next step:
+Rewrite the app with graphql.
