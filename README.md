@@ -22,7 +22,7 @@ To run the test suite, run
 yarn test
 ```
 
-pre-commit and pre-push hook are added, with there is code change, prettier, eslint and unit test will run per configuration
+pre-commit and pre-push hook are added, when there is a code change, prettier, eslint and unit test will run as configured
 
 
 NOTE: Please replace KEY/API_KEY by google map API keys in file 'server/utils/utils.js' and 'client/src/components/CustomMap.js' to see the results
