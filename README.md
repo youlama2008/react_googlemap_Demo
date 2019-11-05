@@ -1,6 +1,6 @@
 # react_googlemap_Demo
 
-### This is a demo project built by node(expres), react, mobx + google map API and styled component
+### This is a demo project built by node(express), react, mobx + google map API and styled component
 
 Frontend and Backend are decoupled. Please go to folder 'server and client‘ and install dependencies by running
 ```
